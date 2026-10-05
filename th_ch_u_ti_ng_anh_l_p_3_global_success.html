@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Thách Đấu Tiếng Anh Lớp 3 - Global Success (Nghe, Nói, Đọc, Viết) 🌟</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Nunito', sans-serif; }
+        .bouncing { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .pulse-btn { animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 via-sky-100 to-pink-100 text-slate-800 min-h-screen pb-16">
+
+    <div id="app" class="max-w-4xl mx-auto px-4 py-6">
+        
+        <!-- HEADER -->
+        <header class="text-center mb-8 bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-4 border-sky-300 relative overflow-hidden">
+            <div class="absolute -top-6 -right-6 text-6xl opacity-30">🎧</div>
+            <div class="absolute -bottom-6 -left-6 text-6xl opacity-30">📚</div>
+            <h1 class="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-indigo-600 to-pink-600 mb-2">
+                🌟 TIẾNG ANH 3 GLOBAL SUCCESS - ÔN HÈ 4 KỸ NĂNG 🌟
+            </h1>
+            <p class="text-slate-600 font-bold text-xs md:text-base">
+                Đầy đủ: 👂 Nghe Audio • 🗣️ Luyện Nói Giọng Chuẩn • 📖 Đọc Hiểu (True/False) • ✍️ Viết & Điền Từ!
+            </p>
+        </header>
+
+        <!-- STEP 1: LOGIN & CHALLENGE BANNER SCREEN -->
+        <div id="screen-login" class="bg-white rounded-3xl p-8 shadow-2xl border-4 border-indigo-200 max-w-lg mx-auto text-center">
+            <div class="text-6xl mb-4 bouncing">🎒</div>
+            <h2 class="text-2xl font-black text-indigo-700 mb-2">Đăng Nhập Thách Đấu</h2>
+            <p class="text-slate-600 mb-6 text-sm">Nhập tên của bé để bắt đầu tính giờ thi và ghi danh bảng vàng:</p>
+            
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1 text-sm">Họ và tên học sinh:</label>
+                    <input type="text" id="input-name" placeholder="Ví dụ: Nguyễn Bảo An" class="w-full px-4 py-3 rounded-2xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-semibold text-lg bg-indigo-50/50">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1 text-sm">Lớp của bạn:</label>
+                    <input type="text" id="input-class" placeholder="Ví dụ: 3A" class="w-full px-4 py-3 rounded-2xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-semibold text-lg bg-indigo-50/50">
+                </div>
+            </div>
+
+            <!-- INCOMING CHALLENGE BANNER -->
+            <div id="incoming-challenge-banner" class="hidden mt-6 p-4 bg-pink-50 rounded-2xl border-2 border-pink-300 text-left">
+                <div class="text-xs font-bold text-pink-600 uppercase mb-1">⚔️ Đang có lời thách đấu trực tiếp!</div>
+                <p class="text-sm font-extrabold text-slate-800" id="banner-challenger-text">Bạn vừa nhận được link thách đấu.</p>
+            </div>
+
+            <button onclick="startApp()" class="mt-8 w-full py-4 bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-extrabold rounded-2xl shadow-lg hover:opacity-90 transition transform active:scale-95 text-lg pulse-btn">
+                🚀 Vào Lớp Thi & Kích Hoạt Đồng Hồ!
+            </button>
+        </div>
+
+        <!-- STEP 2: SKILLS MENU SELECTOR -->
+        <div id="screen-menu" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-indigo-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-extrabold text-indigo-700">Chào bé, <span id="display-student-name" class="text-pink-600">Bé</span>! 👋</h3>
+                    <p class="text-slate-500 text-sm">Lớp: <span id="display-student-class" class="font-semibold text-sky-600">3A</span></p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="openCreateChallengeModal()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow transition text-sm flex items-center gap-1">
+                        ⚔️ Tạo Link Thách Đấu
+                    </button>
+                    <button onclick="showLeaderboard()" class="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-amber-900 font-bold rounded-xl shadow transition text-sm flex items-center gap-1">
+                        🏆 Bảng Xếp Hạng
+                    </button>
+                    <button onclick="resetLogin()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl shadow transition text-sm">
+                        🔄 Đổi Tên
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. KỸ NĂNG NGHE (LISTENING) -->
+                <div onclick="startSkillTest('listening')" class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-xl cursor-pointer transform hover:-translate-y-2 transition duration-300 border-4 border-blue-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition">🎧</div>
+                    <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 backdrop-blur">🔊</div>
+                    <h3 class="text-xl font-black mb-2">1. Kỹ Năng Nghe (Listening)</h3>
+                    <p class="text-blue-100 text-xs mb-6 leading-relaxed">
+                        Nghe đoạn hội thoại ngắn chuẩn Global Success (Giới thiệu bạn bè, đồ dùng học tập, phòng học) và chọn đáp án đúng.
+                    </p>
+                    <div class="flex justify-between items-center font-bold text-xs">
+                        <span class="bg-blue-400/40 px-3 py-1 rounded-xl backdrop-blur">5 Câu hỏi (Có Audio)</span>
+                        <span class="bg-white text-blue-700 px-3 py-2 rounded-xl shadow group-hover:bg-blue-50 transition">Bắt Đầu Nghe ➔</span>
+                    </div>
+                </div>
+
+                <!-- 2. KỸ NĂNG NÓI (SPEAKING) -->
+                <div onclick="startSkillTest('speaking')" class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-xl cursor-pointer transform hover:-translate-y-2 transition duration-300 border-4 border-pink-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition">🗣️</div>
+                    <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 backdrop-blur">🎙️</div>
+                    <h3 class="text-xl font-black mb-2">2. Kỹ Năng Nói (Speaking)</h3>
+                    <p class="text-pink-100 text-xs mb-6 leading-relaxed">
+                        Chọn câu trả lời phản hồi đúng nhất cho các tình huống giao tiếp lớp 3 (Chào hỏi, hỏi tên, hỏi màu sắc, sở thích).
+                    </p>
+                    <div class="flex justify-between items-center font-bold text-xs">
+                        <span class="bg-pink-400/40 px-3 py-1 rounded-xl backdrop-blur">5 Câu hỏi tình huống</span>
+                        <span class="bg-white text-pink-700 px-3 py-2 rounded-xl shadow group-hover:bg-pink-50 transition">Luyện Nói ➔</span>
+                    </div>
+                </div>
+
+                <!-- 3. KỸ NĂNG ĐỌC (READING) -->
+                <div onclick="startSkillTest('reading')" class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-xl cursor-pointer transform hover:-translate-y-2 transition duration-300 border-4 border-emerald-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition">📖</div>
+                    <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 backdrop-blur">👁️‍🗨️</div>
+                    <h3 class="text-xl font-black mb-2">3. Kỹ Năng Đọc (Reading)</h3>
+                    <p class="text-emerald-100 text-xs mb-6 leading-relaxed">
+                        Đọc đoạn văn ngắn bám sát đề ôn hè Loigiaihay, xác định True/False và chọn từ vựng điền đúng ngữ cảnh.
+                    </p>
+                    <div class="flex justify-between items-center font-bold text-xs">
+                        <span class="bg-emerald-400/40 px-3 py-1 rounded-xl backdrop-blur">5 Câu đọc hiểu</span>
+                        <span class="bg-white text-emerald-700 px-3 py-2 rounded-xl shadow group-hover:bg-emerald-50 transition">Vào Đọc Hiểu ➔</span>
+                    </div>
+                </div>
+
+                <!-- 4. KỸ NĂNG VIẾT (WRITING) -->
+                <div onclick="startSkillTest('writing')" class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-6 text-white shadow-xl cursor-pointer transform hover:-translate-y-2 transition duration-300 border-4 border-amber-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition">✍️</div>
+                    <div class="bg-white/20 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 backdrop-blur">📝</div>
+                    <h3 class="text-xl font-black mb-2">4. Kỹ Năng Viết (Writing)</h3>
+                    <p class="text-amber-100 text-xs mb-6 leading-relaxed">
+                        Sắp xếp từ thành câu hoàn chỉnh, tìm lỗi sai và điền từ vào chỗ trống đúng ngữ pháp Global Success.
+                    </p>
+                    <div class="flex justify-between items-center font-bold text-xs">
+                        <span class="bg-amber-400/40 px-3 py-1 rounded-xl backdrop-blur">5 Câu tự luận/điền từ</span>
+                        <span class="bg-white text-amber-700 px-3 py-2 rounded-xl shadow group-hover:bg-amber-50 transition">Vào Viết ➔</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FULL TEST ALL IN ONE BUTTON -->
+            <div class="text-center pt-2">
+                <button onclick="startSkillTest('all')" class="px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white font-black text-lg rounded-2xl shadow-xl hover:opacity-90 transition transform active:scale-95 pulse-btn">
+                    🔥 Thử Thách Toàn Diện (Đủ Cả 4 Kỹ Năng - 20 Câu) 🔥
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 3: QUIZ EXAM SCREEN -->
+        <div id="screen-quiz" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-purple-200 flex justify-between items-center sticky top-4 z-40">
+                <button onclick="backToMenu()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 font-bold rounded-xl text-sm flex items-center gap-1 text-slate-700">
+                    ⬅️ Chọn Kỹ Năng Khác
+                </button>
+                <div class="text-center font-black text-purple-700 text-base md:text-lg truncate max-w-[220px] md:max-w-none" id="quiz-title-header">Bài Thi Tiếng Anh 3</div>
+                <div id="timer-box" class="bg-pink-100 text-pink-700 px-4 py-2 rounded-xl font-extrabold text-sm flex items-center gap-1 shadow-inner">
+                    ⏱️ <span id="time-left">15:00</span>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container" class="space-y-6"></div>
+
+            <div class="text-center pb-8 pt-4">
+                <button onclick="submitQuiz()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xl rounded-2xl shadow-xl hover:opacity-90 transition transform active:scale-95 pulse-btn">
+                    ✅ Nộp Bài & Chấm Điểm Thang 10 Ngay
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 4: RESULT & DETAILED REVIEW SCREEN -->
+        <div id="screen-result" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl border-4 border-amber-300 text-center relative overflow-hidden">
+                <div class="text-7xl mb-2 bouncing" id="result-emoji">🏆</div>
+                <h2 class="text-3xl font-black text-purple-700 mb-1" id="result-title">Hoàn Thành Xuất Sắc!</h2>
+                <p class="text-slate-600 font-semibold mb-6" id="result-subtitle">Bé đã hoàn thành bài thi Tiếng Anh 3</p>
+
+                <div class="inline-block bg-gradient-to-r from-amber-100 to-yellow-100 border-4 border-amber-300 rounded-3xl px-8 py-5 mb-6 shadow-inner">
+                    <div class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">Thang Điểm 10 Tuyệt Đối</div>
+                    <div class="text-6xl font-black text-amber-600 my-1"><span id="score-number">10.0</span><span class="text-2xl text-amber-500">/10</span></div>
+                    <div class="text-sm font-extrabold text-slate-700 mt-2" id="result-rank-text">Xếp loại: Xuất Sắc Star 🌟</div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="retryQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow transition">
+                        🔄 Thi Lại Kỹ Năng Này
+                    </button>
+                    <button onclick="backToMenu()" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl shadow transition">
+                        📚 Chọn Kỹ Năng Khác
+                    </button>
+                    <button onclick="openCreateChallengeModal()" class="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl shadow transition flex items-center gap-2">
+                        ⚔️ Tạo Link Thách Đấu Bạn Bè
+                    </button>
+                </div>
+            </div>
+
+            <!-- Review Section -->
+            <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-indigo-200">
+                <h3 class="text-xl font-extrabold text-indigo-700 mb-4 flex items-center gap-2">
+                    🔍 Chấm Chữa Chi Tiết (Đáp Án & Giải Thích)
+                </h3>
+                <div id="review-container" class="space-y-6"></div>
+            </div>
+        </div>
+
+        <!-- CREATE CHALLENGE MODAL -->
+        <div id="modal-challenge" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-pink-300 text-center">
+                <div class="text-5xl mb-2">⚔️</div>
+                <h3 class="text-2xl font-black text-pink-600 mb-2">Tạo Thách Đấu Trực Tiếp</h3>
+                <p class="text-slate-600 text-sm mb-4">Gửi link này cho bạn bè để đọ điểm 10 thời gian thực!</p>
+                
+                <div class="bg-pink-50 p-3 rounded-2xl border-2 border-pink-200 text-xs font-mono text-pink-800 break-all mb-4 select-all text-left" id="challenge-link-box">
+                    https://lophocvuinhon.app/challenge?from=BaoAn&mode=all
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="copyChallengeLink()" class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow transition">
+                        📋 Sao Chép Link Thách Đấu
+                    </button>
+                    <button onclick="closeChallengeModal()" class="w-full py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEADERBOARD MODAL -->
+        <div id="modal-leaderboard" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-amber-300 max-h-[85vh] flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b pb-3">
+                    <h3 class="text-xl font-black text-amber-600 flex items-center gap-2">🏆 Bảng Vàng Tiếng Anh 3</h3>
+                    <button onclick="closeLeaderboard()" class="w-8 h-8 rounded-full bg-slate-100 font-bold text-slate-600 hover:bg-slate-200 flex items-center justify-center">✕</button>
+                </div>
+                <div id="leaderboard-list" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 20 CÂU HỎI TIẾNG ANH 3 GLOBAL SUCCESS (ĐỦ 4 KỸ NĂNG NGHE - NÓI - ĐỌC - VIẾT) ---
+        
+        // 1. KỸ NĂNG NGHE (LISTENING - 5 CÂU)
+        const listeningQuestions = [
+            { 
+                id: 'l1', skill: 'listening', type: 'multiple', topic: 'Listening - Unit 3 (Our friends)', 
+                audioText: "This is my friend, Mai.", 
+                question: 'Nghe audio câu giới thiệu bạn và chọn nhân vật đúng:', 
+                options: ['This is my friend, Mai.', 'That is my teacher, Mr Loc.', 'This is my sister, Jenny.', 'That is my classroom.'], 
+                answer: 0, 
+                explanation: 'Audio đọc: "This is my friend, Mai." (Đây là bạn mình, Mai).' 
+            },
+            { 
+                id: 'l2', skill: 'listening', type: 'multiple', topic: 'Listening - Unit 6 (Our school)', 
+                audioText: "My school is very large and nice.", 
+                question: 'Nghe đoạn hội thoại mô tả trường học và chọn đáp án:', 
+                options: ['My school is small and old.', 'My school is very large and nice.', 'This is my computer room.', 'That is my school bag.'], 
+                answer: 1, 
+                explanation: 'Audio mô tả: "My school is very large and nice."' 
+            },
+            { 
+                id: 'l3', skill: 'listening', type: 'multiple', topic: 'Listening - Unit 7 (Classroom instructions)', 
+                audioText: "May I open my book, Mr Loc?", 
+                question: 'Nghe câu xin phép thầy giáo và chọn đúng:', 
+                options: ['May I go out?', 'May I open my book, Mr Loc?', 'May I speak Vietnamese?', 'Close your book, please.'], 
+                answer: 1, 
+                explanation: 'Audio đọc: "May I open my book, Mr Loc?"' 
+            },
+            { 
+                id: 'l4', skill: 'listening', type: 'multiple', topic: 'Listening - Unit 9 (Colours)', 
+                audioText: "What colour is your pencil case? It's red.", 
+                question: 'Nghe câu hỏi và trả lời về màu sắc hộp bút:', 
+                options: ['It is blue.', 'It is red.', 'It is yellow.', 'It is green.'], 
+                answer: 1, 
+                explanation: 'Audio trả lời: "It\'s red."' 
+            },
+            { 
+                id: 'l5', skill: 'listening', type: 'multiple', topic: 'Listening - Unit 17 (Our toys)', 
+                audioText: "I have two robots and a kite.", 
+                question: 'Nghe bạn nhỏ kể về đồ chơi của mình:', 
+                options: ['I have a cat and a dog.', 'I have two robots and a kite.', 'I have a big ball.', 'I have three books.'], 
+                answer: 1, 
+                explanation: 'Audio: "I have two robots and a kite."' 
+            }
+        ];
+
+        // 2. KỸ NĂNG NÓI (SPEAKING - 5 CÂU TÌNH HUỐNG GIAO TẾP)
+        const speakingQuestions = [
+            { 
+                id: 's1', skill: 'speaking', type: 'multiple', topic: 'Speaking - Greeting & Introduction', 
+                question: 'Bạn muốn giới thiệu đây là bạn của mình (Ben) đứng ở gần, bạn sẽ nói gì?', 
+                options: ['That is Ben.', 'This is Ben.', 'Hello, Ben.', 'Goodbye, Ben.'], 
+                answer: 1, 
+                explanation: 'Giới thiệu người ở gần dùng cấu trúc: "This is + tên" (This is Ben).' 
+            },
+            { 
+                id: 's2', skill: 'speaking', type: 'multiple', topic: 'Speaking - Classroom polite requests', 
+                question: 'Bạn muốn xin phép cô giáo cho em vào lớp (May I come in?), cô giáo đồng ý sẽ đáp lại thế nào?', 
+                options: ['No, you can\'t.', 'Yes, you can.', 'Thank you.', 'Goodbye.'], 
+                answer: 1, 
+                explanation: 'Khi đồng ý cho phép ai làm gì: "Yes, you can."' 
+            },
+            { 
+                id: 's3', skill: 'speaking', type: 'multiple', topic: 'Speaking - Hobbies', 
+                question: 'Bạn muốn hỏi sở thích vẽ tranh của bạn cùng bàn, câu hỏi đúng là:', 
+                options: ['What\'s your hobby? – I like painting.', 'What colour is it?', 'How are you?', 'Where are you from?'], 
+                answer: 0, 
+                explanation: 'Hỏi sở thích dùng cấu trúc: "What\'s your hobby? – I like painting."' 
+            },
+            { 
+                id: 's4', skill: 'speaking', type: 'multiple', topic: 'Speaking - At the dining table', 
+                question: 'Mẹ mời bạn ăn một ít gà rán lịch sự: "Would you like some chicken?" Bạn từ chối khéo léo và lịch sự:', 
+                options: ['Yes, please.', 'No, thank you.', 'I like chicken.', 'Eat it now.'], 
+                answer: 1, 
+                explanation: 'Từ chối lịch sự lời mời ăn uống: "No, thank you."' 
+            },
+            { 
+                id: 's5', skill: 'speaking', type: 'multiple', topic: 'Speaking - Pets & Toys', 
+                question: 'Bạn muốn hỏi bạn của mình có nuôi chú vẹt nào không (parrot), bạn hỏi:', 
+                options: ['Do you have a parrot?', 'Is that a parrot?', 'What is your parrot?', 'Where is the parrot?'], 
+                answer: 0, 
+                explanation: 'Hỏi xem ai đó có con vật/đồ vật gì: "Do you have a...?"' 
+            }
+        ];
+
+        // 3. KỸ NĂNG ĐỌC (READING - 5 CÂU ĐỌC HIỂU TRUE/FALSE & ĐIỀN TỪ)
+        const readingQuestions = [
+            { 
+                id: 'r1', skill: 'reading', type: 'multiple', topic: 'Reading - School & Classroom', 
+                question: 'Đọc đoạn văn:<br><em>"My school is very large. This is my classroom. It\'s small but nice..."</em><br><br>Hỏi: Lan\'s classroom is large. (Đúng hay Sai?)', 
+                options: ['True (Đúng)', 'False (Sai)'], 
+                answer: 1, 
+                explanation: 'Thông tin trong bài: "It\'s small but nice" (Phòng học nhỏ chứ không lớn), nên câu này là Sai (False).' 
+            },
+            { 
+                id: 'r2', skill: 'reading', type: 'multiple', topic: 'Reading - School bag', 
+                question: 'Dựa vào đoạn văn trên: "Her school bag is new and nice." Đúng hay Sai?', 
+                options: ['True (Đúng)', 'False (Sai)'], 
+                answer: 0, 
+                explanation: 'Thông tin trong bài: "This is my school bag. It\'s new and nice." nên câu này là Đúng (True).' 
+            },
+            { 
+                id: 'r3', skill: 'reading', type: 'multiple', topic: 'Reading - Classroom Instructions', 
+                question: 'Điền từ còn thiếu vào ô trống:<br><em>"May I ____________ my book, Mr Loc? – Yes, you can."</em>', 
+                options: ['open', 'close', 'sit', 'stand'], 
+                answer: 0, 
+                explanation: 'Cấu trúc xin phép mở sách: "May I open my book, Mr Loc?"' 
+            },
+            { 
+                id: 'r4', skill: 'reading', type: 'multiple', topic: 'Reading - Pencil Case color', 
+                question: 'Điền từ hỏi màu sắc thích hợp:<br><em>"What ____________ is your pencil case? – It\'s red."</em>', 
+                options: ['colour', 'name', 'old', 'time'], 
+                answer: 0, 
+                explanation: 'Hỏi màu sắc dùng từ "What colour".' 
+            },
+            { 
+                id: 'r5', skill: 'reading', type: 'multiple', topic: 'Reading - Outdoor Activities', 
+                question: 'Đọc đoạn đọc về thể thao:<br><em>"I kick the ball in soccer. I can\'t catch the ball in soccer but my friend can. He is a goalie..."</em><br><br>Hỏi: Người bắt bóng trong khung thành gọi là gì?', 
+                options: ['goalie', 'player', 'teacher', 'friend'], 
+                answer: 0, 
+                explanation: 'Thông tin: "He is a goalie" (Thủ môn / người bắt bóng).' 
+            }
+        ];
+
+        // 4. KỸ NĂNG VIẾT (WRITING - 5 CÂU TỰ LUẬN & SẮP XẾP CÂU)
+        const writingQuestions = [
+            { 
+                id: 'w1', skill: 'writing', type: 'input', topic: 'Writing - Sắp xếp câu', 
+                question: 'Sắp xếp các từ thành câu hoàn chỉnh:<br><strong>is / This / school / my /.</strong><br><em>(Nhập câu viết hoa chữ cái đầu và có dấu chấm):</em>', 
+                answer: 'This is my school.', 
+                explanation: 'Cấu trúc giới thiệu trường học của tôi: "This is my school."' 
+            },
+            { 
+                id: 'w2', skill: 'writing', type: 'input', topic: 'Writing - Điền từ vào chỗ trống', 
+                question: 'Điền từ còn thiếu:<br><strong>I have ____________ cats. (Tôi có hai con mèo)</strong>', 
+                answer: 'two', 
+                explanation: 'Số 2 trong tiếng Anh là "two".' 
+            },
+            { 
+                id: 'w3', skill: 'writing', type: 'input', topic: 'Writing - Tìm lỗi sai chính tả', 
+                question: 'Sửa lỗi sai và viết lại từ đúng cho từ sau:<br><strong>pencile</strong> (hộp bút/bút chì)', 
+                answer: 'pencil', 
+                explanation: 'Từ đúng là "pencil" (bút chì) hoặc "pencil case" (hộp bút).' 
+            },
+            { 
+                id: 'w4', skill: 'writing', type: 'input', topic: 'Writing - Hỏi tuổi / Tên', 
+                question: 'Viết câu trả lời hoàn chỉnh cho câu hỏi: <em>"What is your name?"</em> (Giả sử tên bạn là Linh):', 
+                answer: 'My name is Linh.', 
+                explanation: 'Cấu trúc trả lời tên: "My name is Linh." (hoặc "I am Linh.")' 
+            },
+            { 
+                id: 'w5', skill: 'writing', type: 'input', topic: 'Writing - Viết số đếm', 
+                question: 'Viết bằng chữ số đếm sau: <strong>10</strong>', 
+                answer: 'ten', 
+                explanation: 'Số 10 trong tiếng Anh viết là "ten".' 
+            }
+        ];
+
+        // --- GLOBAL STATE ---
+        let currentUser = { name: '', className: '' };
+        let currentMode = 'all'; // 'listening', 'speaking', 'reading', 'writing', 'all'
+        let activeQuestions = [];
+        let userAnswers = {};
+        let timerInterval = null;
+        let timeLeftSeconds = 900; // 15 phút
+        let challengeFrom = '';
+
+        let leaderboardData = [
+            { name: 'Gia Bảo', className: 'Lớp 3A', mode: 'Toàn Diện (4 Kỹ Năng)', score: 10.0, time: '8 phút' },
+            { name: 'Hà Linh', className: 'Lớp 3B', mode: 'Kỹ Năng Nghe', score: 10.0, time: '5 phút' }
+        ];
+
+        // CHECK URL PARAMS ON LOAD
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            challengeFrom = urlParams.get('from');
+            const modeParam = urlParams.get('mode');
+            if (challengeFrom) {
+                document.getElementById('incoming-challenge-banner').classList.remove('hidden');
+                document.getElementById('banner-challenger-text').innerText = `🔥 Bạn nhận được lời thách đấu từ bạn [ ${challengeFrom} ]! Hãy nhập tên để so tài điểm 10 ngay.`;
+                if (modeParam) currentMode = modeParam;
+            }
+        };
+
+        function startApp() {
+            const nameInput = document.getElementById('input-name').value.trim();
+            const classInput = document.getElementById('input-class').value.trim();
+
+            if (!nameInput || !classInput) {
+                showToast('Bé vui lòng nhập đầy đủ Tên và Lớp nhé! 😊');
+                return;
+            }
+
+            currentUser.name = nameInput;
+            currentUser.className = classInput;
+
+            document.getElementById('display-student-name').innerText = currentUser.name;
+            document.getElementById('display-student-class').innerText = currentUser.className;
+
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('screen-menu').classList.remove('hidden');
+            
+            triggerConfetti();
+        }
+
+        function resetLogin() {
+            document.getElementById('screen-menu').classList.add('hidden');
+            document.getElementById('screen-login').classList.remove('hidden');
+        }
+
+        function startSkillTest(mode) {
+            currentMode = mode;
+            if (mode === 'listening') activeQuestions = listeningQuestions;
+            else if (mode === 'speaking') activeQuestions = speakingQuestions;
+            else if (mode === 'reading') activeQuestions = readingQuestions;
+            else if (mode === 'writing') activeQuestions = writingQuestions;
+            else activeQuestions = [...listeningQuestions, ...speakingQuestions, ...readingQuestions, ...writingQuestions];
+
+            userAnswers = {};
+
+            const titles = {
+                listening: '🎧 Kỹ Năng Nghe Tiếng Anh 3 (5 Câu)',
+                speaking: '🗣️ Kỹ Năng Nói & Giao Tiếp (5 Câu)',
+                reading: '📖 Kỹ Năng Đọc Hiểu Global Success (5 Câu)',
+                writing: '✍️ Kỹ Năng Viết & Ngữ Pháp (5 Câu)',
+                all: '🔥 Thử Thách 4 Kỹ Năng Nghe - Nói - Đọc - Viết (20 Câu)'
+            };
+            document.getElementById('quiz-title-header').innerText = titles[mode];
+
+            document.getElementById('screen-menu').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+
+            renderQuestions();
+            startTimer();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToMenu() {
+            clearInterval(timerInterval);
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-menu').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startTimer() {
+            timeLeftSeconds = currentMode === 'all' ? 1200 : 600;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeftSeconds--;
+                updateTimerDisplay();
+                if (timeLeftSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeLeftSeconds / 60);
+            const secs = timeLeftSeconds % 60;
+            document.getElementById('time-left').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function playAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+                showToast('🔊 Đang phát audio giọng chuẩn...');
+            } else {
+                showToast('Trình duyệt không hỗ trợ phát âm thanh.');
+            }
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            activeQuestions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-3xl p-6 shadow-xl border-2 border-indigo-100';
+
+                let extraHtml = '';
+                if (q.skill === 'listening' && q.audioText) {
+                    extraHtml = `
+                        <div class="mb-4 p-3 bg-sky-50 rounded-2xl border-2 border-sky-200 flex items-center justify-between">
+                            <span class="text-xs font-bold text-sky-700">🔊 Bấm để nghe Audio câu hỏi:</span>
+                            <button onclick="playAudio('${q.audioText}')" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-xl shadow text-xs transition flex items-center gap-1">
+                                ▶️ Nghe Lại
+                            </button>
+                        </div>
+                    `;
+                }
+
+                let bodyHtml = '';
+                if (q.type === 'multiple') {
+                    let optionsHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">`;
+                    q.options.forEach((opt, optIdx) => {
+                        optionsHtml += `
+                            <label class="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-100 bg-slate-50 hover:bg-indigo-50/50 hover:border-indigo-300 cursor-pointer transition">
+                                <input type="radio" name="q_${q.id}" value="${optIdx}" onchange="saveAnswer('${q.id}', ${optIdx})" class="w-5 h-5 text-indigo-600">
+                                <span class="font-semibold text-slate-700 text-sm md:text-base">${opt}</span>
+                            </label>
+                        `;
+                    });
+                    optionsHtml += `</div>`;
+                    bodyHtml = optionsHtml;
+                } else {
+                    bodyHtml = `
+                        <div class="mt-4">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">✍️ Nhập đáp án tiếng Anh của bé:</label>
+                            <input type="text" id="input_q_${q.id}" oninput="saveInputAnswer('${q.id}')" placeholder="Ghi đáp án vào đây..." class="w-full md:w-2/3 px-4 py-3 rounded-2xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none font-bold text-base bg-indigo-50/40">
+                        </div>
+                    `;
+                }
+
+                const skillBadges = {
+                    listening: { name: '🎧 NGHE (LISTENING)', color: 'bg-blue-100 text-blue-700' },
+                    speaking: { name: '🗣️ NÓI (SPEAKING)', color: 'bg-pink-100 text-pink-700' },
+                    reading: { name: '📖 ĐỌC (READING)', color: 'bg-emerald-100 text-emerald-700' },
+                    writing: { name: '✍️ VIẾT (WRITING)', color: 'bg-amber-100 text-amber-700' }
+                };
+
+                const badge = skillBadges[q.skill] || { name: q.topic, color: 'bg-purple-100 text-purple-700' };
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4 mb-2">
+                        <span class="px-3 py-1 ${badge.color} font-extrabold text-xs rounded-xl">Câu ${index + 1}: ${badge.name}</span>
+                        <span class="text-xs font-bold text-slate-400">${q.topic}</span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-800 text-base md:text-lg mb-2">${q.question}</h4>
+                    ${extraHtml}
+                    ${bodyHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function saveAnswer(qId, optionIdx) {
+            userAnswers[qId] = optionIdx;
+        }
+
+        function saveInputAnswer(qId) {
+            const val = document.getElementById(`input_q_${qId}`).value.trim();
+            userAnswers[qId] = val;
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            
+            let correctCount = 0;
+            const total = activeQuestions.length;
+
+            activeQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (userAns !== undefined && userAns !== '') {
+                    if (q.type === 'multiple') {
+                        if (parseInt(userAns) === q.answer) correctCount++;
+                    } else {
+                        const cleanUser = String(userAns).trim().toLowerCase().replace(/\.$/, '');
+                        const cleanCorrect = String(q.answer).trim().toLowerCase().replace(/\.$/, '');
+                        if (cleanUser === cleanCorrect) correctCount++;
+                    }
+                }
+            });
+
+            const finalScore = parseFloat(((correctCount / total) * 10).toFixed(1));
+
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+
+            document.getElementById('result-emoji').innerText = finalScore >= 9 ? '🏆' : (finalScore >= 7 ? '🎉' : '💪');
+            document.getElementById('result-title').innerText = finalScore >= 9 ? 'Tuyệt Vời Điểm 10!' : 'Hoàn Thành Xuất Sắc!';
+            document.getElementById('result-subtitle').innerText = `${currentUser.name} (${currentUser.className}) đã hoàn thành. Đúng: ${correctCount}/${total}`;
+            document.getElementById('score-number').innerText = finalScore;
+
+            const modeNames = {
+                listening: 'Kỹ Năng Nghe',
+                speaking: 'Kỹ Năng Nói',
+                reading: 'Kỹ Năng Đọc',
+                writing: 'Kỹ Năng Viết',
+                all: 'Toàn Diện (4 Kỹ Năng)'
+            };
+
+            leaderboardData.unshift({
+                name: currentUser.name,
+                className: currentUser.className,
+                mode: modeNames[currentMode],
+                score: finalScore,
+                time: 'Vừa xong'
+            });
+
+            renderReview();
+            triggerConfetti();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function retryQuiz() {
+            userAnswers = {};
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestions();
+            startTimer();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderReview() {
+            const container = document.getElementById('review-container');
+            container.innerHTML = '';
+
+            activeQuestions.forEach((q, index) => {
+                const userAns = userAnswers[q.id];
+                let isCorrect = false;
+                let userAnswerText = 'Chưa trả lời';
+                let correctAnswerText = '';
+
+                if (q.type === 'multiple') {
+                    correctAnswerText = q.options[q.answer];
+                    if (userAns !== undefined && userAns !== '') {
+                        userAnswerText = q.options[userAns];
+                        if (parseInt(userAns) === q.answer) isCorrect = true;
+                    }
+                } else {
+                    correctAnswerText = q.answer;
+                    if (userAns !== undefined && userAns !== '') {
+                        userAnswerText = userAns;
+                        const cleanUser = String(userAns).trim().toLowerCase().replace(/\.$/, '');
+                        const cleanCorrect = String(q.answer).trim().toLowerCase().replace(/\.$/, '');
+                        if (cleanUser === cleanCorrect) {
+                            isCorrect = true;
+                        }
+                    }
+                }
+
+                const card = document.createElement('div');
+                card.className = `p-5 rounded-2xl border-2 ${isCorrect ? 'border-emerald-200 bg-emerald-50/50' : 'border-rose-200 bg-rose-50/50'}`;
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-extrabold text-sm text-slate-700">Câu ${index + 1}: ${q.topic}</span>
+                        <span class="px-3 py-1 rounded-xl text-xs font-bold ${isCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-rose-200 text-rose-800'}">
+                            ${isCorrect ? '✅ Đúng' : '❌ Sai'}
+                        </span>
+                    </div>
+                    <p class="font-semibold text-slate-800 text-sm mb-3">${q.question}</p>
+                    <div class="text-xs space-y-1 mb-3">
+                        <div class="text-slate-600">✍️ Bé chọn: <span class="font-bold">${userAnswerText}</span></div>
+                        ${!isCorrect ? `<div class="text-emerald-700">💡 Đáp án chuẩn: <span class="font-bold">${correctAnswerText}</span></div>` : ''}
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-xl text-xs text-indigo-900 border border-indigo-100">
+                        <strong>📖 Giải thích chi tiết:</strong> ${q.explanation}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openCreateChallengeModal() {
+            const name = currentUser.name || 'Học sinh';
+            const link = window.location.origin + window.location.pathname + `?from=${encodeURIComponent(name)}&mode=${currentMode}`;
+            document.getElementById('challenge-link-box').innerText = link;
+            document.getElementById('modal-challenge').classList.remove('hidden');
+            document.getElementById('modal-challenge').classList.add('flex');
+        }
+
+        function closeChallengeModal() {
+            document.getElementById('modal-challenge').classList.add('hidden');
+            document.getElementById('modal-challenge').classList.remove('flex');
+        }
+
+        function copyChallengeLink() {
+            const text = document.getElementById('challenge-link-box').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Đã sao chép link thách đấu! Hãy gửi cho bạn bè ngay 📋');
+            closeChallengeModal();
+        }
+
+        function showLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = '';
+
+            leaderboardData.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between p-3 bg-amber-50/50 rounded-2xl border-2 border-amber-100';
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-amber-400 text-amber-900 font-extrabold text-xs flex items-center justify-center shadow">#${idx + 1}</span>
+                        <div>
+                            <div class="font-extrabold text-slate-800 text-sm">${item.name} <span class="text-xs text-slate-500 font-normal">(${item.className})</span></div>
+                            <div class="text-xs text-purple-600 font-bold">Chế độ: ${item.mode}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-black text-amber-600 text-base">${item.score}/10</div>
+                        <div class="text-[10px] text-slate-400">${item.time}</div>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            document.getElementById('modal-leaderboard').classList.remove('hidden');
+            document.getElementById('modal-leaderboard').classList.add('flex');
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('modal-leaderboard').classList.add('hidden');
+            document.getElementById('modal-leaderboard').classList.remove('flex');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/90 text-white font-bold px-6 py-3 rounded-2xl shadow-2xl z-50 text-sm backdrop-blur animate-bounce';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            }
+        }
+    </script>
+</body>
+</html>
